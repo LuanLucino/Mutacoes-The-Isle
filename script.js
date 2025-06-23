@@ -1,15 +1,14 @@
-// script.js
-
-function mostrarPagina(paginaId) {
-  const paginas = document.querySelectorAll('.pagina');
-  paginas.forEach(pagina => pagina.classList.remove('active'));
-  document.getElementById(paginaId).classList.add('active');
+// Alterna a exibição do menu em telas menores
+function toggleMenu() {
+  const navbar = document.querySelector('.navbar');
+  navbar.classList.toggle('active');
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('btnMutacoes').addEventListener('click', () => mostrarPagina('paginaMutacoes'));
-  document.getElementById('btnDesbloqueaveis').addEventListener('click', () => mostrarPagina('paginaDesbloqueaveis'));
-
-  // Mostrar a primeira página ao carregar
-  mostrarPagina('paginaMutacoes');
-});
+// Mostra somente o conteúdo da aba selecionada
+function showTab(tabName) {
+  const tabs = document.querySelectorAll('.tab-content');
+  tabs.forEach(function(tab) {
+    tab.style.display = "none";
+  });
+  document.getElementById(tabName).style.display = "block";
+}

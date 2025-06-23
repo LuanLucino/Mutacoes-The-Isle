@@ -1,117 +1,165 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
   <meta charset="UTF-8">
-  <title>Mutações The Isle</title>
-  <link rel="shortcut icon" href="favicom/mutacao-de-gene.png" type="Icone">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧬 Mutações The Isle 🦖</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Mutações The Isle</h1>
-  <div class="container">
-    <div class="column">
-      <div class="card">
-        <div class="title">HEMOMANIA</div>
-        <div class="tooltip">Hemomania: Causa dano extra em um alvo sangrando. <span class="valor">Valor: 10%</span></div>
+  <div class="wrapper">
+    <header>
+      <h1>🧬 Mutações The Isle 🦖</h1>
+    </header>
+    <main class="main-container">
+      <!-- Container unificado para abas e conteúdo -->
+      <div class="tab-container">
+        <nav class="navbar">
+          <div class="nav-links">
+            <ul>
+              <li><a href="#" onclick="showTab('mutacoes')">🔹 Mutações</a></li>
+              <li><a href="#" onclick="showTab('desbloqueaveis')">🔓 Desbloqueáveis</a></li>
+            </ul>
+          </div>
+          <div class="hamburger" onclick="toggleMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>
+        </nav>
+        <div class="content-box">
+          <!-- Aba Mutações -->
+          <div id="mutacoes" class="tab-content">
+            <div class="mutation-item">
+              <div class="mutation-title">HEMOMANIA</div>
+              <div class="mutation-detail">
+                Causa dano extra em um alvo sangrando. <strong>Valor: 10%</strong>
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">HEMATOFAGIA</div>
+              <div class="mutation-detail">
+                Restaure um pouco da sede ao comer. <strong>Valor: 35%</strong>
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">ATAQUE ACELERADO DE PRESA</div>
+              <div class="mutation-detail">
+                Causa mais dano a animais com pouca saúde. <strong>Valor: 12%</strong>
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">REGENERAÇÃO CELULAR</div>
+              <div class="mutation-detail">
+                Recupera a saúde um pouco mais rápido. <strong>Valor: 30%</strong>
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">HIDRATAÇÃO SUSTENTADA</div>
+              <div class="mutation-detail">
+                Sua água escoa mais lentamente. <strong>Valor: 50%</strong>
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">MENISCO AUMENTADO</div>
+              <div class="mutation-detail">
+                O dano de Hit atinge a stamina antes de drenar a saúde.
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">PESO DE PENA</div>
+              <div class="mutation-detail">
+                Suas pegadas desaparecem muito mais rápido. <strong>Valor: 1</strong>
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">OSTEOSCLEROSE</div>
+              <div class="mutation-detail">
+                Resista ou reduza o dano de fratura. <strong>Valor: 60%</strong>
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">WADER</div>
+              <div class="mutation-detail">
+                Menos impedido ao vadear em águas rasas. <strong>Valor: 1</strong>
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">FIBROSE EPIDÉRMICA</div>
+              <div class="mutation-detail">
+                Aumentar a resistência ao sangramento. <strong>Valor: 15%</strong>
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">HIPOALGESIA CONGÊNITA</div>
+              <div class="mutation-detail">
+                Reduz o dano recebido ao lutar contra espécies maiores. <strong>Valor: 15%</strong>
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">TECIDO FOTOSSINTÉTICO</div>
+              <div class="mutation-detail">
+                Saúde mais rápida / recuperação de saúde bloqueada e maior velocidade de movimento durante o dia. <strong>Valor: 5%</strong>
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">NOCTURNO</div>
+              <div class="mutation-detail">
+                Saúde mais rápida / recuperação de saúde bloqueada e maior velocidade de movimento durante a noite. <strong>Valor: 5%</strong>
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">HIDROREGERATIVO</div>
+              <div class="mutation-detail">
+                Recupere a saúde mais rápido durante a chuva. <strong>Valor: 50%</strong>
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">AUMENTO DA CAPACIDADE INSPIRATÓRIA</div>
+              <div class="mutation-detail">
+                Aumento da capacidade 02. <strong>Valor: 50%</strong>
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">HIDRODINÂMICO</div>
+              <div class="mutation-detail">
+                Maior velocidade de natação. <strong>Valor: 15%</strong>
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">RETENÇÃO ÓPTICA SUBMERSA</div>
+              <div class="mutation-detail">
+                Maior alcance de visão subaquática. <strong>Valor: 20%</strong>
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">REABSORÇÃO</div>
+              <div class="mutation-detail">
+                Recupere uma pequena quantidade de água durante o tempo chuvoso ou ao nadar em água potável. <strong>Valor: 1</strong>
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">DIGESTÃO MELHORADA</div>
+              <div class="mutation-detail">
+                Diminui a taxa de decaimento nutricional. <strong>Valor: 25%</strong>
+              </div>
+            </div>
+            <div class="mutation-item">
+              <div class="mutation-title">COMUNICAÇÃO INFRASSOM</div>
+              <div class="mutation-detail">
+                Faça significativamente menos barulho ao falar no chat. <strong>Valor: 50%</strong>
+              </div>
+            </div>
+          </div>
+          <!-- Aba Desbloqueáveis (conteúdo padrão placeholder) -->
+          <div id="desbloqueaveis" class="tab-content" style="display: none;">
+            <p>
+              Conteúdo de Desbloqueáveis: aqui estarão os itens desbloqueáveis.
+            </p>
+          </div>
+        </div>
       </div>
-
-      <div class="card">
-        <div class="title">HEMATOPHAGY</div>
-        <div class="tooltip">Hematofagia: Restaure um pouco da sede ao comer. <span class="valor">Valor: 35%</span></div>
-      </div>
-
-      <div class="card">
-        <div class="title">ACCELERATED PREY DRIVE</div>
-        <div class="tooltip">Ataque Acelerado de Presa: Causa mais dano a animais com pouca saúde. <span class="valor">Valor: 12%</span></div>
-      </div>
-
-      <div class="card">
-        <div class="title">CELLULAR REGENERATION</div>
-        <div class="tooltip">Regeneração Celular: Recupera a saúde um pouco mais rápido. <span class="valor">Valor: 30%</span></div>
-      </div>
-
-      <div class="card">
-        <div class="title">SUSTAINED HYDRATION</div>
-        <div class="tooltip">Hidratação Sustentada: Sua água escoa mais lentamente. <span class="valor">Valor: 50%</span></div>
-      </div>
-
-      <div class="card">
-        <div class="title">ENLARGED MENISCUS</div>
-        <div class="tooltip">Menisco Aumentado: O dano de Hit atinge a stamina antes da saúde.</div>
-      </div>
-
-      <div class="card">
-        <div class="title">FEATHER WEIGHT</div>
-        <div class="tooltip">Peso de Pena: Suas pegadas desaparecem muito mais rápido. <span class="valor">Valor: 1</span></div>
-      </div>
-
-      <div class="card">
-        <div class="title">OSTEOSCLEROSIS</div>
-        <div class="tooltip">Osteosclerose: Resista ou reduza o dano de fratura. <span class="valor">Valor: 60%</span></div>
-      </div>
-
-      <div class="card">
-        <div class="title">WADER</div>
-        <div class="tooltip">Wader: Menos impedido ao vadear em águas rasas. <span class="valor">Valor: 1</span></div>
-      </div>
-
-      <div class="card">
-        <div class="title">EPIDERMAL FIBROSIS</div>
-        <div class="tooltip">Fibrose Epidérmica: Aumenta a resistência ao sangramento. <span class="valor">Valor: 15%</span></div>
-      </div>
-    </div>
-
-    <div class="column">
-      <div class="card">
-        <div class="title">CONGENITAL HYPOALGESIA</div>
-        <div class="tooltip">Hipoalgesia Congênita: Reduz o dano recebido ao lutar contra espécies maiores. <span class="valor">Valor: 15%</span></div>
-      </div>
-
-      <div class="card">
-        <div class="title">PHOTOSYNTHETIC TISSUE</div>
-        <div class="tooltip">Tecido Fotossintético: Recuperação de saúde mais rápida e maior velocidade durante o dia. <span class="valor">Valor: 5%</span></div>
-      </div>
-
-      <div class="card">
-        <div class="title">NOCTURNAL</div>
-        <div class="tooltip">Nocturno: Recuperação de saúde mais rápida e maior velocidade durante a noite. <span class="valor">Valor: 5%</span></div>
-      </div>
-
-      <div class="card">
-        <div class="title">HYDROREGERATIVE</div>
-        <div class="tooltip">Hidroregerativo: Recupere a saúde mais rápido durante a chuva. <span class="valor">Valor: 50%</span></div>
-      </div>
-
-      <div class="card">
-        <div class="title">INCREASED INSPIRATORY CAPACITY</div>
-        <div class="tooltip">Aumento da Capacidade Inspiratória: Capacidade de O2 maior. <span class="valor">Valor: 50%</span></div>
-      </div>
-
-      <div class="card">
-        <div class="title">HYDRODYNAMIC</div>
-        <div class="tooltip">Hidrodinâmico: Maior velocidade de natação. <span class="valor">Valor: 15%</span></div>
-      </div>
-
-      <div class="card">
-        <div class="title">SUBMERGED OPTICAL RETENTION</div>
-        <div class="tooltip">Retenção Óptica Submersa: Maior alcance de visão subaquática. <span class="valor">Valor: 20%</span></div>
-      </div>
-
-      <div class="card">
-        <div class="title">REABSORPTION</div>
-        <div class="tooltip">Reabsorção: Recupera uma pequena quantidade de água na chuva ou nadando. <span class="valor">Valor: 1</span></div>
-      </div>
-
-      <div class="card">
-        <div class="title">ENHANCED DIGESTION</div>
-        <div class="tooltip">Digestão Melhorada: Diminui a taxa de decaimento nutricional. <span class="valor">Valor: 25%</span></div>
-      </div>
-
-      <div class="card">
-        <div class="title">INFRASOUND COMMUNICATION</div>
-        <div class="tooltip">Comunicação Infrassom: Faz menos barulho no chat. <span class="valor">Valor: 50%</span></div>
-      </div>
-    </div>
+    </main>
   </div>
   <script src="script.js"></script>
 </body>
