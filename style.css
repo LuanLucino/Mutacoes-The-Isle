@@ -1,0 +1,60 @@
+body {
+  background-color: #121212;
+  color: white;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 45%;
+}
+
+.card {
+  position: relative;
+  background-color: #1e1e1e;
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.title {
+  font-weight: bold;
+  color: #00aaff;
+}
+
+.tooltip {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  width: 250px;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.card:hover .tooltip {
+  display: block;
+}
+
+.valor {
+  color: #00ff88;
+  font-weight: bold;
+}
