@@ -1,0 +1,152 @@
+/* Aplica box-sizing em todos os elementos */
+* {
+  box-sizing: border-box;
+}
+
+/* Container principal da página */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 40px);
+}
+
+/* Estilos globais */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  text-align: center;
+  padding: 20px;
+}
+
+header h1 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+/* Container centralizado do conteúdo principal */
+.main-container {
+  max-width: 800px;
+  width: 100%;
+  margin: 20px auto;
+}
+
+/* Container unificado para abas e conteúdo */
+.tab-container {
+  border: 2px solid #3498db;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Navbar – parte superior do bloco unificado */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #000;
+}
+
+/* Container para os links (abas) */
+.nav-links ul {
+  list-style: none;
+  display: inline-flex;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  margin: 0 10px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #fff;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #3498db;
+}
+
+/* Ícone hamburger para responsividade */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.hamburger .line {
+  width: 25px;
+  height: 3px;
+  background-color: #fff;
+  margin: 4px 0;
+}
+
+/* Caixa de conteúdo – parte inferior do bloco unificado */
+.content-box {
+  width: 100%;
+  background-color: #111;
+  padding: 20px;
+}
+
+/* Estilos para os itens de mutações com box individual */
+.mutation-item {
+  margin: 10px 0;
+  padding: 10px;
+  border: 2px solid #3498db;
+  border-radius: 8px;
+  background-color: #222;
+  transition: background-color 0.3s;
+}
+.mutation-title {
+  font-weight: bold;
+  cursor: pointer;
+}
+.mutation-detail {
+  display: none;
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: #ccc;
+}
+.mutation-item:hover {
+  background-color: #2a2a2a;
+}
+.mutation-item:hover .mutation-detail {
+  display: block;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .hamburger {
+    display: flex;
+    align-self: flex-end;
+  }
+  
+  .nav-links ul {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .navbar.active .nav-links ul {
+    display: flex;
+  }
+  
+  .nav-links li {
+    margin: 10px 0;
+  }
+}
