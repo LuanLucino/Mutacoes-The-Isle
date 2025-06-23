@@ -16,16 +16,30 @@ function showTab(tabName) {
 // Adiciona listeners para interação acessível (clique e teclado) em cada título de item
 document.addEventListener("DOMContentLoaded", function() {
   const mutationTitles = document.querySelectorAll('.mutation-title');
+  
   mutationTitles.forEach(function(title) {
-    // Ao clicar, alterna a classe .active no elemento pai (mutation-item)
-    title.addEventListener('click', function() {
-      this.parentElement.classList.toggle('active');
-    });
-    // Ao pressionar Enter ou Espaço, também alterna
+    // Função que alterna apenas o item clicado (dentro do seu contêiner)
+    function toggleItem() {
+      // Obtem o contêiner pai dos itens de mutação
+      const container = this.closest('.mutation-items');
+      // Fecha todos os itens dentro deste contêiner
+      container.querySelectorAll('.mutation-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      // Abre (ativa) somente o item clicado, se ele não estava aberto
+      if (!this.parentElement.classList.contains('active')) {
+        this.parentElement.classList.add('active');
+      }
+    }
+    
+    // Listener de clique
+    title.addEventListener('click', toggleItem);
+    
+    // Listener de teclado para Enter ou Espaço
     title.addEventListener('keydown', function(e) {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        this.parentElement.classList.toggle('active');
+        toggleItem.call(this);
       }
     });
   });
