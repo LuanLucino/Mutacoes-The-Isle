@@ -95,14 +95,14 @@ header h1 {
   padding: 20px;
 }
 
-/* Container para agrupar os itens de mutações em duas colunas */
+/* Container para agrupar itens (mutações ou desbloqueáveis) em duas colunas */
 .mutation-items {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
 
-/* Estilos para cada box individual de mutação */
+/* Estilos para cada box individual */
 .mutation-item {
   padding: 10px;
   border: 2px solid #3498db;
@@ -110,20 +110,24 @@ header h1 {
   background-color: #222;
   transition: background-color 0.3s;
 }
+
+/* Estilo para o título com foco e ação */
 .mutation-title {
   font-weight: bold;
   cursor: pointer;
+  outline: none;
 }
+
+/* Detalhes inicialmente ocultos */
 .mutation-detail {
   display: none;
   margin-top: 5px;
   font-size: 0.9em;
   color: #ccc;
 }
-.mutation-item:hover {
-  background-color: #2a2a2a;
-}
-.mutation-item:hover .mutation-detail {
+
+/* Ao clicar ou ativar, o detalhe é exibido */
+.mutation-item.active .mutation-detail {
   display: block;
 }
 
