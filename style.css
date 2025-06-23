@@ -99,8 +99,9 @@ header h1 {
 .mutation-items {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 10px 38px; /* Espaço de aproximadamente 1cm entre as colunas */
 }
+
 
 /* Estilos para cada box individual */
 .mutation-item {
