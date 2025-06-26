@@ -1,167 +1,187 @@
-/* Aplica box-sizing em todos os elementos */
+/* Reset */
 * {
   box-sizing: border-box;
-}
-
-/* Container principal da página */
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: calc(100vh - 40px);
-}
-
-/* Estilos globais */
-body {
   margin: 0;
   padding: 0;
-  background-color: #000;
-  color: #fff;
+}
+
+/* Corpo geral */
+body {
+  background-color: #121212;
+  color: #e0e0e0;
   font-family: Arial, sans-serif;
 }
 
+/* Cabeçalho */
 header {
   text-align: center;
   padding: 20px;
 }
-
 header h1 {
   font-size: 2rem;
-  margin: 0;
-}
-
-/* Container centralizado do conteúdo principal */
-.main-container {
-  max-width: 800px;
-  width: 100%;
-  margin: 20px auto;
-}
-
-/* Container unificado para abas e conteúdo */
-.tab-container {
-  border: 2px solid #3498db;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-/* Navbar – parte superior do bloco unificado */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #000;
-}
-
-/* Container para os links (abas) */
-.nav-links ul {
-  list-style: none;
-  display: inline-flex;
-  margin: 0;
-  padding: 0;
-}
-
-.nav-links li {
-  margin: 0 10px;
-}
-
-.nav-links a {
-  text-decoration: none;
   color: #fff;
-  transition: color 0.3s;
 }
 
-.nav-links a:hover {
-  color: #3498db;
-}
-
-/* Ícone hamburger para responsividade */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-}
-
-.hamburger .line {
-  width: 25px;
-  height: 3px;
-  background-color: #fff;
-  margin: 4px 0;
-}
-
-/* Caixa de conteúdo – parte inferior do bloco unificado */
-.content-box {
-  width: 100%;
-  background-color: #111;
+/* Layout */
+.layout-columns {
+  display: flex;
+  gap: 24px;
   padding: 20px;
 }
+.central-content {
+  flex: 1;
+}
 
-/* Container para agrupar itens (mutações ou desbloqueáveis) em duas colunas */
+/* Painéis laterais */
+.sidebar-left,
+.sidebar-right {
+  width: 220px;
+  background-color: #1e1e1e;
+  border: 1px solid #2d6aa6;
+  padding: 16px;
+  border-radius: 8px;
+  position: sticky;
+  top: 20px;
+  font-size: 0.95em;
+  height: fit-content;
+}
+
+.sidebar-left h3,
+.sidebar-right h3 {
+  font-size: 1.1em;
+  margin-bottom: 8px;
+  color: #6fb0ff;
+}
+
+.sidebar-left ul,
+.sidebar-right ul {
+  list-style: none;
+  padding-left: 0;
+  color: #aad8ff;
+  margin-top: 10px;
+}
+.sidebar-left li::before,
+.sidebar-right li::before {
+  content: '🧬 ';
+  margin-right: 4px;
+}
+
+/* Botões nos painéis */
+.sidebar-left button,
+.sidebar-right button {
+  background-color: #2d6aa6;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  margin-top: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+.sidebar-left button:hover,
+.sidebar-right button:hover {
+  background-color: #3f8cd4;
+}
+
+/* Botões de filtro */
+.filter-buttons {
+  text-align: center;
+  margin: 20px 0;
+}
+.filter-buttons button {
+  background-color: #2d6aa6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin: 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-weight: 500;
+}
+.filter-buttons button:hover {
+  background-color: #3f8cd4;
+}
+
+/* Itens de mutação */
 .mutation-items {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px 38px; /* Espaço de aproximadamente 1cm entre as colunas */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
 }
 
+/* Container central com largura máxima ajustada */
+.central-content {
+  flex: 1;
+  max-width: 1080px;
+}
 
-/* Estilos para cada box individual */
+/* Espaçamento externo para cada mutação */
 .mutation-item {
-  padding: 10px;
-  border: 2px solid #3498db;
-  border-radius: 8px;
-  background-color: #222;
-  transition: background-color 0.3s;
+  margin: 4px;
+  padding: 12px;
+  min-height: 110px;
+  background-color: #1a1a1a;
+  border: 1px solid #2d6aa6;
+  border-radius: 6px;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* Estilo para o título com foco e ação */
+/* Grid de mutações com margens equilibradas */
+.mutation-items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px 16px;
+  justify-items: center;
+}
+
 .mutation-title {
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 0.95em;
   cursor: pointer;
-  outline: none;
+  color: #fff;
 }
-
-/* Detalhes inicialmente ocultos */
 .mutation-detail {
-  display: none;
-  margin-top: 5px;
+  margin-top: 6px;
   font-size: 0.9em;
   color: #ccc;
+  display: block; /* mantém sempre visível */
 }
 
-/* Ao clicar ou ativar, o detalhe é exibido */
-.mutation-item.active .mutation-detail {
-  display: block;
+/* Selecionados */
+.mutation-item.selecionado {
+  border: 2px solid #2ecc71;
+  background-color: #132d1a;
+  box-shadow: 0 0 6px #2ecc7150;
 }
 
-/* Responsividade: em telas menores, exibe somente uma coluna */
-@media (max-width: 600px) {
-  .mutation-items {
-    grid-template-columns: 1fr;
-  }
-  
-  .navbar {
+/* Botões internos de seleção */
+.select-btn {
+  margin-top: 10px;
+  background-color: #444;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+.select-btn:hover {
+  background-color: #666;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .layout-columns {
     flex-direction: column;
-    align-items: center;
-    padding: 10px;
   }
-  
-  .hamburger {
-    display: flex;
-    align-self: flex-end;
-  }
-  
-  .nav-links ul {
-    display: none;
-    flex-direction: column;
+  .sidebar-left,
+  .sidebar-right {
     width: 100%;
-    align-items: center;
-    margin-top: 10px;
-  }
-  
-  .navbar.active .nav-links ul {
-    display: flex;
-  }
-  
-  .nav-links li {
-    margin: 10px 0;
+    position: static;
   }
 }
