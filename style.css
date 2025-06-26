@@ -1,11 +1,11 @@
-/* Reset */
+/* Reset básico */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* Corpo geral */
+/* Corpo da página */
 body {
   background-color: #121212;
   color: #e0e0e0;
@@ -22,20 +22,23 @@ header h1 {
   color: #fff;
 }
 
-/* Layout */
+/* Layout de colunas */
 .layout-columns {
   display: flex;
   gap: 24px;
   padding: 20px;
+  align-items: flex-start;
 }
 .central-content {
   flex: 1;
+  max-width: 1080px;
+  margin-top: 8px;
 }
 
 /* Painéis laterais */
 .sidebar-left,
 .sidebar-right {
-  width: 220px;
+  width: 240px;
   background-color: #1e1e1e;
   border: 1px solid #2d6aa6;
   padding: 16px;
@@ -45,14 +48,12 @@ header h1 {
   font-size: 0.95em;
   height: fit-content;
 }
-
 .sidebar-left h3,
 .sidebar-right h3 {
   font-size: 1.1em;
   margin-bottom: 8px;
   color: #6fb0ff;
 }
-
 .sidebar-left ul,
 .sidebar-right ul {
   list-style: none;
@@ -85,7 +86,7 @@ header h1 {
   background-color: #3f8cd4;
 }
 
-/* Botões de filtro */
+/* Filtros */
 .filter-buttons {
   text-align: center;
   margin: 20px 0;
@@ -105,59 +106,44 @@ header h1 {
   background-color: #3f8cd4;
 }
 
-/* Itens de mutação */
-.mutation-items {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-}
-
-/* Container central com largura máxima ajustada */
-.central-content {
-  flex: 1;
-  max-width: 1080px;
-}
-
-/* Espaçamento externo para cada mutação */
-.mutation-item {
-  margin: 4px;
-  padding: 12px;
-  min-height: 110px;
-  background-color: #1a1a1a;
-  border: 1px solid #2d6aa6;
-  border-radius: 6px;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-/* Grid de mutações com margens equilibradas */
+/* Cards de mutações */
 .mutation-items {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px 16px;
-  justify-items: center;
+  gap: 16px;
+  justify-items: stretch;
 }
-
-.mutation-title {
-  font-weight: 600;
-  font-size: 0.95em;
-  cursor: pointer;
-  color: #fff;
+.mutation-item {
+  background-color: #1a1a1a;
+  border: 1px solid #2d6aa6;
+  border-radius: 6px;
+  padding: 12px;
+  min-height: 130px;
+  margin: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-.mutation-detail {
-  margin-top: 6px;
-  font-size: 0.9em;
-  color: #ccc;
-  display: block; /* mantém sempre visível */
-}
-
-/* Selecionados */
 .mutation-item.selecionado {
   border: 2px solid #2ecc71;
   background-color: #132d1a;
   box-shadow: 0 0 6px #2ecc7150;
 }
+.mutation-title {
+  font-weight: 600;
+  font-size: 0.95em;
+  color: #fff;
+  cursor: pointer;
+}
+.mutation-detail {
+  font-size: 0.9em;
+  color: #ccc;
+  margin-top: 8px;
+  display: block;
+}
 
-/* Botões internos de seleção */
+/* Botão dentro da mutação */
 .select-btn {
   margin-top: 10px;
   background-color: #444;
@@ -168,14 +154,13 @@ header h1 {
   cursor: pointer;
   font-size: 0.85em;
   transition: background-color 0.2s;
-  width: 100%;
 }
 .select-btn:hover {
   background-color: #666;
 }
 
 /* Responsivo */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .layout-columns {
     flex-direction: column;
   }
@@ -184,4 +169,37 @@ header h1 {
     width: 100%;
     position: static;
   }
+  .mutation-items {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}
+
+.dino-selector {
+  margin-bottom: 20px;
+}
+
+.simulador-status {
+  background-color: #1a1a1a;
+  margin-top: 30px;
+  padding: 16px;
+  border: 1px solid #2d6aa6;
+  border-radius: 8px;
+  max-width: 720px;
+}
+
+.simulador-status h2 {
+  margin-bottom: 10px;
+  color: #6fb0ff;
+}
+
+.simulador-status ul {
+  list-style: none;
+  padding-left: 0;
+  color: #aad8ff;
+  line-height: 1.6;
+}
+
+select option.placeholder-option {
+  color: #888;
+  font-style: italic;
 }

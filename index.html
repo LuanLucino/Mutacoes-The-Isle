@@ -14,28 +14,45 @@
 
   <div class="layout-columns">
     <aside class="sidebar-left">
-      <h3>🦴 Selecionadas</h3>
+      <h3>🦖 Selecionadas</h3>
       <ul id="selected-list"></ul>
       <p id="slot-count">0/3 Selecionadas</p>
       <button onclick="resetSelecao()">Limpar</button>
     </aside>
 
-    <div class="central-content">
-      <nav class="navbar">
-        <div class="nav-links">
-          <ul>
-            <li><a href="#" onclick="showTab('mutacoes')">🔹 Mutações</a></li>
-            <li><a href="#" onclick="showTab('desbloqueaveis')">🔓 Desbloqueáveis</a></li>
-          </ul>
-        </div>
-      </nav>
 
+    <div class="dino-selector">
+  <select id="select-dino" onchange="atualizarSimulador()">
+  <!-- O JS vai preencher tudo aqui -->
+</select>
+
+
+</div>
+
+<div class="simulador-status">
+  <h2>📈 Atributos Base</h2>
+  <ul id="atributos-dino">
+    <li>Velocidade: —</li>
+    <li>Mordida: —</li>
+    <li>Peso: —</li>
+    <li>Habilidade: —</li>
+    <li>Grupo Máximo: —</li>
+  </ul>
+</div>
+
+
+<!-- Json-->
+    <div class="central-content">    
       <div class="content-box">
         <div class="filter-buttons">
+
+          <button a href="#"onclick="showTab('mutacoes')">🔹 Mutações</button>
           <button onclick="filtrarMutacoes('todos')">Todas</button>
           <button onclick="filtrarMutacoes('carnivoro')">Carnívoras</button>
           <button onclick="filtrarMutacoes('herbivoro')">Herbívoras</button>
           <button onclick="filtrarMutacoes('onivoro')">Onívoras</button>
+          <button a href="#"onclick="showTab('desbloqueaveis')">🔓 Desbloqueáveis</button>
+
         </div>
 
         <div id="mutacoes" class="tab-content">
@@ -49,6 +66,7 @@
                 Causa dano extra em um alvo sangrando. <strong>Valor: 10%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="carnivoro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -57,7 +75,9 @@
               <div class="mutation-detail">
                 Restaure um pouco da sede ao comer. <strong>Valor: 25%</strong>
               </div>
+              
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="carnivoro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -67,15 +87,17 @@
                 Causa mais dano a animais com pouca saúde. <strong>Valor: 10%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
               <div class="mutation-title" tabindex="0" role="button">
                 CELLULAR REGENERATION
               </div>
               <div class="mutation-detail">
-                Recupera a saúde um pouco mais rápido. <strong>Valor: 60%</strong>
+                Recupera a saúde um pouco mais rápido. <strong>Valor: 80%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -85,6 +107,7 @@
                 Sua água escoa mais lentamente. <strong>Valor: 30%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -94,6 +117,7 @@
                 O dano de Hit atinge a stamina antes de drenar a saúde.
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -103,6 +127,7 @@
                 Suas pegadas desaparecem muito mais rápido. <strong>Valor: 50%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -112,6 +137,7 @@
                 Resista ou reduza o dano de fratura. <strong>Valor: 20%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -121,6 +147,7 @@
                 Menos impedido ao vadear em águas rasas. <strong>Valor: 25%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -130,6 +157,7 @@
                 Aumenta a resistência ao sangramento. <strong>Valor: 15%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -139,6 +167,7 @@
                 Reduz o dano recebido ao lutar contra espécies maiores. <strong>Valor: 15%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -148,6 +177,7 @@
                 Saúde mais rápida / recuperação de saúde bloqueada e maior velocidade de movimento durante o dia. <strong>Valor: 5%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -157,6 +187,7 @@
                 Saúde mais rápida / recuperação bloqueada e maior velocidade de movimento durante a noite. <strong>Valor: 8%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -166,6 +197,7 @@
                 Recupere a saúde mais rápido durante a chuva. <strong>Valor: 25%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -175,6 +207,7 @@
                 Aumento da capacidade O₂. <strong>Valor: 50%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -184,6 +217,7 @@
                 Maior velocidade de natação. <strong>Valor: 15%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -193,6 +227,7 @@
                 Maior alcance de visão subaquática. <strong>Valor: 1</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -202,6 +237,7 @@
                 Recupere uma pequena quantidade de água durante chuva ou ao nadar. <strong>Valor: 2</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -211,6 +247,7 @@
                 Diminui a taxa de decaimento nutricional. <strong>Valor: 30%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="herbivoro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -220,6 +257,7 @@
                 Ovos chocam/incubam mais rapidamente. <strong>Valor: 50%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="herbivoro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -229,10 +267,9 @@
                 Recebe um aviso antes de tempestades ou secas.
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
-
-
-                        <div class="mutation-item" data-tipo="herbivoro">
+              <div class="mutation-item" data-tipo="herbivoro">
               <div class="mutation-title" tabindex="0" role="button">
                 HYPERVIGILANCE (HERBÍVORO)
               </div>
@@ -240,6 +277,7 @@
                 Aumenta os ângulos da câmera ao comer/beber e amplia o som de passos. <strong>Valor: 50%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="onivoro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -249,6 +287,7 @@
                 Aumenta o tamanho do grupo (buffado 0.17.54) <strong>Apenas Líder do Grupo</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="herbivoro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -258,6 +297,7 @@
                 Regenera stamina mais rápido durante o dia. <strong>Valor: 10%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="herbivoro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -267,6 +307,7 @@
                 O coice tem maior chance de desmontar animais agarrados. <strong>Valor: 5%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="herbivoro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -276,6 +317,7 @@
                 Ganha um pouco de água ao comer plantas. <strong>Valor: 15%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
               <div class="mutation-title" tabindex="0" role="button">
@@ -285,6 +327,7 @@
                 Faça significativamente menos barulho ao falar no chat. <strong>Valor: 50%</strong>
               </div>
               <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
+              <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
           </div>
         </div>
@@ -300,6 +343,7 @@
                 Visão noturna aumentada.<br>
                 <strong>Como obter:</strong> Mate 4-12 jogadores à noite.
               </div>
+              <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
               <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="carnivoro">
@@ -310,6 +354,7 @@
                 Adiciona sua própria espécie como presa preferida.<br>
                 <strong>Como obter:</strong> Coma sua própria espécie.
               </div>
+              <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
               <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
@@ -320,6 +365,7 @@
                 Diminui a taxa de decaimento da nutrição.<br>
                 <strong>Como obter:</strong> Mantenha uma dieta Boa ou melhor por 60%+ do tempo de crescimento.
               </div>
+              <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
               <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
 
@@ -331,6 +377,7 @@
                 Aumenta a capacidade de comer em excesso.<br>
                 <strong>Como obter:</strong> Mantenha o estômago cheio por 9 minutos.
               </div>
+              <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
               <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
@@ -341,6 +388,7 @@
                 Reduz o limite de regeneração de stamina.<br>
                 <strong>Como obter:</strong> Drene 6-8 barras de stamina.
               </div>
+              <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
               <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="carnivoro">
@@ -351,6 +399,7 @@
                 Consome ossos para regenerar fraturas mais rápido.<br>
                 <strong>Como obter:</strong> Coma ossos.
               </div>
+              <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
               <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="herbivoro">
@@ -361,6 +410,7 @@
                 Bebês têm maior regeneração e crescem mais rápido.<br>
                 <strong>Como obter:</strong> Crie e aninhe/incube/crie 5 indivíduos até Jovem.
               </div>
+              <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
               <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
@@ -371,6 +421,7 @@
                 Saltar custa menos stamina (buffado 0.17.54).<br>
                 <strong>Como obter:</strong> Salte 50 vezes.
               </div>
+              <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
               <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
             <div class="mutation-item" data-tipo="neutro">
@@ -381,6 +432,7 @@
                 Pode beber água salgada.<br>
                 <strong>Como obter:</strong> Beba água salgada até que "Deficiente em Fluidos" desapareça.
               </div>
+              <button class="select-btn" onclick="selecionarMutacao(this)">Ativar</button>
               <button class="select-btn" onclick="selecionarHerdada(this)">Herdar</button>
             </div>
           </div> <!-- fecha .mutation-items -->
@@ -397,6 +449,9 @@
     </aside>
   </div> <!-- fecha .layout-columns -->
 
+
+
+  <script src="dinos.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
