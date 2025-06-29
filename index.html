@@ -52,6 +52,8 @@
           <button onclick="filtrarMutacoes('herbivoro')">Herbívoras</button>
           <button onclick="filtrarMutacoes('onivoro')">Onívoras</button>
           <button onclick="showTab('desbloqueaveis')">🔓 Desbloqueáveis</button>
+          <button onclick="showTab('combate')">⚔️ Combate</button>
+
         </div>
 
         <!-- Aba Mutações -->
@@ -66,6 +68,58 @@
       </div>
     </section>
 
+    <!-- Aba Combate -->
+     <div id="combate" class="tab-content" style="display: none;">
+  <section id="simulador-combate" class="content-box">
+    <h2 class="titulo-combate">
+  ⚔️ Simulador de Combate
+  <span class="tooltip-wrapper">
+    ❔
+    <span class="tooltip-text">
+      Compara atributos como <strong>dano</strong>, <strong>velocidade</strong> e <strong>mutações</strong>.<br>
+      Não simula habilidades únicas como <em>sangramento</em>, <em>vômito</em> ou <em>escalada</em>.
+    </span>
+  </span>
+</h2>
+
+
+
+
+    <div class="combate-container">
+      <div class="combatente">
+        <h3>Combatente A</h3>
+        <select id="dino-a" onchange="atualizarCombatente('a')"></select>
+        <ul id="atributos-a"></ul>
+        <div class="mutacoes-combate">
+  <label>Mutações:</label>
+  <div class="mutacoes-lista" id="mutacoes-a"></div>
+</div>
+
+        
+      </div>
+
+      <div class="combatente">
+        <h3>Combatente B</h3>
+        <select id="dino-b" onchange="atualizarCombatente('b')"></select>
+        <ul id="atributos-b"></ul>
+        <div class="mutacoes-combate">
+  <label>Mutações:</label>
+  <div class="mutacoes-lista" id="mutacoes-b"></div>
+</div>
+
+      </div>
+    </div>
+
+    <div class="resultado-combate">
+      <button onclick="simularCombate()">Simular Combate</button>
+      <canvas id="grafico-combate" width="400" height="400" style="margin-top: 30px;"></canvas>
+      <button onclick="exportarGrafico()" style="margin-top: 15px;">📥 Baixar Gráfico</button>
+      <p id="resultado-combate-texto"></p>
+    </div>
+  </section>
+</div>
+
+
     <!-- Sidebar direita -->
     <aside class="sidebar-right">
       <h3>🐣 Herdadas</h3>
@@ -77,5 +131,7 @@
 
   <script src="dinos.js"></script>
   <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </body>
 </html>

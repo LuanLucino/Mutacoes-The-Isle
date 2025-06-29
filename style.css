@@ -219,3 +219,105 @@ header h1 {
     transform: scale(1);
   }
 }
+
+
+.resultado-combate button {
+  padding: 10px 20px;
+  background-color: rgb(0, 220, 180);
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #000;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 0 8px rgba(0, 220, 180, 0.3);
+  margin-right: 10px;
+}
+
+.resultado-combate button:hover {
+  background-color: rgb(0, 200, 160);
+  transform: scale(1.03);
+  box-shadow: 0 0 12px rgba(0, 220, 180, 0.5);
+}
+
+
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 0.9em;
+  color: rgb(0, 220, 180);
+  cursor: help;
+}
+
+.tooltip-text {
+  position: absolute;
+  top: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #111;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid rgb(0, 220, 180);
+  white-space: normal;
+  width: 280px;
+  text-align: left;
+  font-size: 0.85em;
+  line-height: 1.4;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.tooltip-text::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent transparent #111 transparent;
+}
+
+.tooltip-wrapper:hover .tooltip-text,
+.tooltip-wrapper.ativo .tooltip-text {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(5px);
+}
+
+
+.mutacoes-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.mutacao-btn {
+  background-color: #222;
+  color: #ccc;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mutacao-btn:hover {
+  background-color: #333;
+  border-color: rgb(0, 220, 180);
+  color: #fff;
+}
+
+.mutacao-btn.selecionada {
+  background-color: rgb(0, 220, 180);
+  color: #000;
+  font-weight: bold;
+  border-color: rgb(0, 220, 180);
+}

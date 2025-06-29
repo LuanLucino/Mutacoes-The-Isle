@@ -9,7 +9,10 @@ const efeitosMutacoes = {
   "Reinforced Tendons": { velocidade: 1, resistencia: 1 }
 };
 
-// === PREENCHE O SELECT COM OS DINOS AGRUPADOS POR DIETA ===
+let selecionadas = [];
+let herdadas = [];
+let graficoCombate = null;
+
 document.addEventListener("DOMContentLoaded", () => {
   const select = document.getElementById('select-dino');
   select.innerHTML = '';
@@ -45,7 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   carregarConteudoMutacoes();
   carregarConteudoDesbloqueaveis();
-  listarBuilds?.(); // Se existir
+  preencherSelectCombate();
+  listarBuilds?.();
 });
 
 // === ATUALIZA O PAINEL DO DINOSSAURO SELECIONADO ===
@@ -134,9 +138,6 @@ function filtrarMutacoes(tipo) {
 }
 
 // === SELEÇÃO DE MUTAÇÕES ===
-let selecionadas = [];
-let herdadas = [];
-
 function selecionarMutacao(botao) {
   const item = botao.closest('.mutation-item');
   const nome = item.querySelector('.mutation-title')?.innerText.trim();
@@ -306,11 +307,210 @@ function inicializarAcordeao() {
 function toggleItem(titleElement) {
   const container = titleElement.closest('.mutation-items');
   const allItems = container.querySelectorAll('.mutation-item');
-
   allItems.forEach(item => item.classList.remove('active'));
 
   const parent = titleElement.parentElement;
   if (!parent.classList.contains('active')) {
     parent.classList.add('active');
   }
+}
+
+// === COMBATE ===
+function preencherSelectCombate() {
+  const selects = [document.getElementById('dino-a'), document.getElementById('dino-b')];
+  selects.forEach(select => {
+    select.innerHTML = '';
+    const optionBase = document.createElement('option');
+    optionBase.value = '';
+    optionBase.textContent = '-- Selecione --';
+    optionBase.disabled = true;
+    optionBase.selected = true;
+    select.appendChild(optionBase);
+
+    const tipos = { "Carnívoro": [], "Herbívoro": [], "Onívoro": [] };
+
+    dadosDinos.dinossauros.forEach(dino => {
+      const dietas = dino.dieta.map(d => d.toLowerCase());
+      if (dietas.includes("onívoro")) tipos["Onívoro"].push(dino);
+      else if (dietas.includes("herbívoro")) tipos["Herbívoro"].push(dino);
+      else tipos["Carnívoro"].push(dino);
+    });
+
+    for (const tipo in tipos) {
+      const group = document.createElement('optgroup');
+      group.label = `🦕 ${tipo}`;
+      tipos[tipo].forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d.nome;
+        opt.textContent = d.nome;
+        group.appendChild(opt);
+      });
+      select.appendChild(group);
+    }
+  });
+}
+
+function obterMutacoesSelecionadas(idContainer) {
+  const container = document.getElementById(idContainer);
+  const selecionadas = container.querySelectorAll('.mutacao-btn.selecionada');
+  return Array.from(selecionadas).map(btn => btn.textContent.trim());
+}
+
+function simularCombate() {
+  const nomeA = document.getElementById('dino-a').value;
+  const nomeB = document.getElementById('dino-b').value;
+  const mutacoesA = obterMutacoesSelecionadas('mutacoes-a');
+  const mutacoesB = obterMutacoesSelecionadas('mutacoes-b');
+  const resultado = document.getElementById('resultado-combate-texto');
+
+  if (!nomeA || !nomeB) {
+    resultado.textContent = "Selecione dois dinossauros para comparar.";
+    return;
+  }
+
+  const dinoA = dadosDinos.dinossauros.find(d => d.nome === nomeA);
+  const dinoB = dadosDinos.dinossauros.find(d => d.nome === nomeB);
+
+  const atributosA = { ...dinoA.atributos_base };
+  const atributosB = { ...dinoB.atributos_base };
+
+  mutacoesA.forEach(nome => {
+    const efeito = efeitosMutacoes[nome];
+    if (!efeito) return;
+    for (let key in efeito) {
+      atributosA[key] = (atributosA[key] || 0) + efeito[key];
+    }
+  });
+
+  mutacoesB.forEach(nome => {
+    const efeito = efeitosMutacoes[nome];
+    if (!efeito) return;
+    for (let key in efeito) {
+      atributosB[key] = (atributosB[key] || 0) + efeito[key];
+    }
+  });
+
+  let pontosA = 0;
+  let pontosB = 0;
+
+  const comparar = (key) => {
+    if ((atributosA[key] || 0) > (atributosB[key] || 0)) pontosA++;
+    else if ((atributosB[key] || 0) > (atributosA[key] || 0)) pontosB++;
+  };
+
+  comparar('dano');
+  comparar('velocidade');
+  comparar('resistencia');
+  comparar('furtividade');
+  comparar('regeneracao');
+
+  if (pontosA > pontosB) {
+    resultado.textContent = `🏆 ${dinoA.nome} tem vantagem no combate!`;
+  } else if (pontosB > pontosA) {
+    resultado.textContent = `🏆 ${dinoB.nome} tem vantagem no combate!`;
+  } else {
+    resultado.textContent = "⚖️ Empate técnico! Ambos são equilibrados.";
+  }
+
+  // Gráfico
+  const labels = ['Dano', 'Velocidade', 'Resistência', 'Furtividade', 'Regeneração'];
+  const dadosA = [
+    atributosA.dano || 0,
+    atributosA.velocidade || 0,
+    atributosA.resistencia || 0,
+    atributosA.furtividade || 0,
+    atributosA.regeneracao || 0
+  ];
+  const dadosB = [
+    atributosB.dano || 0,
+    atributosB.velocidade || 0,
+    atributosB.resistencia || 0,
+    atributosB.furtividade || 0,
+    atributosB.regeneracao || 0
+  ];
+
+  if (graficoCombate) graficoCombate.destroy();
+
+  const ctx = document.getElementById('grafico-combate').getContext('2d');
+  graficoCombate = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: dinoA.nome,
+          data: dadosA,
+          backgroundColor: 'rgba(0, 220, 180, 0.2)',
+          borderColor: 'rgba(0, 220, 180, 1)',
+          pointBackgroundColor: 'rgba(0, 220, 180, 1)'
+        },
+        {
+          label: dinoB.nome,
+          data: dadosB,
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          pointBackgroundColor: 'rgba(255, 99, 132, 1)'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        r: {
+          suggestedMin: 0,
+          suggestedMax: 10,
+          ticks: { stepSize: 1, color: '#ccc' },
+          grid: { color: '#444' },
+          pointLabels: {
+            color: '#fff',
+            font: { size: 14 }
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          labels: { color: '#fff' }
+        }
+      }
+    }
+  });
+}
+
+function atualizarCombatente(letra) {
+  const select = document.getElementById(`dino-${letra}`);
+  const nome = select.value;
+  const painel = document.getElementById(`atributos-${letra}`);
+  const mutacoes = obterMutacoesSelecionadas(`mutacoes-${letra}`);
+
+  const dino = dadosDinos.dinossauros.find(d => d.nome === nome);
+  if (!dino) {
+    painel.innerHTML = '<li>Selecione um dinossauro</li>';
+    return;
+  }
+
+  const atributos = { ...dino.atributos_base };
+  mutacoes.forEach(nomeMut => {
+    const efeito = efeitosMutacoes[nomeMut];
+    if (!efeito) return;
+    for (let key in efeito) {
+      atributos[key] = (atributos[key] || 0) + efeito[key];
+    }
+  });
+
+  painel.innerHTML = `
+    <li>Velocidade: ${atributos.velocidade || dino.velocidade_kmh}</li>
+    <li>Dano Estratégico: ${atributos.dano || dino.mordida}</li>
+    <li>Resistência: ${atributos.resistencia || 0}</li>
+    <li>Furtividade: ${atributos.furtividade || 0}</li>
+    <li>Regeneração: ${atributos.regeneracao || 0}</li>
+  `;
+}
+
+// === EXPORTAÇÃO DO GRÁFICO ===
+function exportarGrafico() {
+  const canvas = document.getElementById('grafico-combate');
+  const link = document.createElement('a');
+  link.download = 'grafico-combate.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
 }
