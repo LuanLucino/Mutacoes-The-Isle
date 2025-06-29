@@ -7,11 +7,10 @@ const efeitosMutacoes = {
   "Cellular Regeneration": { regeneracao: 3 },
   "Cannibalistic": { dano: 1, regeneracao: 1 },
   "Reinforced Tendons": { velocidade: 1, resistencia: 1 }
-  // Adicione mais mutações conforme sua lista
 };
 
 // === PREENCHE O SELECT COM OS DINOS AGRUPADOS POR DIETA ===
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   const select = document.getElementById('select-dino');
   select.innerHTML = '';
 
@@ -23,8 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
   optionBase.classList.add('placeholder-option');
   select.appendChild(optionBase);
 
-
-  
   const tipos = { "Carnívoro": [], "Herbívoro": [], "Onívoro": [] };
 
   dadosDinos.dinossauros.forEach(dino => {
@@ -46,7 +43,9 @@ document.addEventListener("DOMContentLoaded", function () {
     select.appendChild(group);
   }
 
-  listarBuilds(); // Carrega builds salvas ao iniciar
+  carregarConteudoMutacoes();
+  carregarConteudoDesbloqueaveis();
+  listarBuilds?.(); // Se existir
 });
 
 // === ATUALIZA O PAINEL DO DINOSSAURO SELECIONADO ===
@@ -134,7 +133,7 @@ function filtrarMutacoes(tipo) {
   });
 }
 
-// === SELEÇÃO DE MUTAÇÕES ATIVAS E HERDADAS ===
+// === SELEÇÃO DE MUTAÇÕES ===
 let selecionadas = [];
 let herdadas = [];
 
@@ -188,7 +187,6 @@ function selecionarHerdada(botao) {
   calcularAtributosFinais();
 }
 
-// === ATUALIZA OS PAINÉIS LATERAIS ===
 function atualizarPainel() {
   const lista = document.getElementById('selected-list');
   lista.innerHTML = '';
@@ -243,6 +241,8 @@ function localizarMutacao(nome) {
 function gerarResumo() {
   const ulAtivas = document.getElementById('resumo-ativas');
   const ulHerdadas = document.getElementById('resumo-herdadas');
+  if (!ulAtivas || !ulHerdadas) return;
+
   ulAtivas.innerHTML = '';
   ulHerdadas.innerHTML = '';
 
@@ -259,4 +259,58 @@ function gerarResumo() {
     li.innerHTML = `<strong>${item.nome}</strong>: ${item.descricao}`;
     ulHerdadas.appendChild(li);
   });
+}
+
+// === CARREGAMENTO DINÂMICO DE CONTEÚDO ===
+function carregarConteudoMutacoes() {
+  fetch('mutacoes.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('mutacoes-container').innerHTML = html;
+      inicializarAcordeao();
+    });
+}
+
+function carregarConteudoDesbloqueaveis() {
+  fetch('desbloqueaveis.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('desbloqueaveis-container').innerHTML = html;
+      inicializarAcordeao();
+    });
+}
+
+// === AÇÕES DE ABA E ACORDEÃO ===
+function showTab(tabId) {
+  const tabs = document.querySelectorAll('.tab-content');
+  tabs.forEach(tab => tab.style.display = 'none');
+
+  const tab = document.getElementById(tabId);
+  if (tab) tab.style.display = 'block';
+}
+
+function inicializarAcordeao() {
+  const titles = document.querySelectorAll('.mutation-title');
+
+  titles.forEach(title => {
+    title.addEventListener('click', () => toggleItem(title));
+    title.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleItem(title);
+      }
+    });
+  });
+}
+
+function toggleItem(titleElement) {
+  const container = titleElement.closest('.mutation-items');
+  const allItems = container.querySelectorAll('.mutation-item');
+
+  allItems.forEach(item => item.classList.remove('active'));
+
+  const parent = titleElement.parentElement;
+  if (!parent.classList.contains('active')) {
+    parent.classList.add('active');
+  }
 }

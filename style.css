@@ -5,201 +5,217 @@
   padding: 0;
 }
 
-/* Corpo da página */
 body {
-  background-color: #121212;
-  color: #e0e0e0;
+  background-color: #000;
+  color: #fff;
   font-family: Arial, sans-serif;
+  line-height: 1.5;
 }
 
 /* Cabeçalho */
 header {
   text-align: center;
   padding: 20px;
+  background-color: #111;
+  border-bottom: 2px solid rgb(0, 180, 150);
 }
+
 header h1 {
   font-size: 2rem;
-  color: #fff;
 }
 
-/* Layout de colunas */
-.layout-columns {
+/* Layout principal */
+.main-layout {
   display: flex;
-  gap: 24px;
+  gap: 20px;
   padding: 20px;
-  align-items: flex-start;
-}
-.central-content {
-  flex: 1;
-  max-width: 1080px;
-  margin-top: 8px;
+  max-width: 1400px;
+  margin: auto;
 }
 
-/* Painéis laterais */
+/* Sidebars */
 .sidebar-left,
 .sidebar-right {
-  width: 240px;
-  background-color: #1e1e1e;
-  border: 1px solid #2d6aa6;
-  padding: 16px;
+  width: 20%;
+  background-color: #111;
+  border: 2px solid rgb(0, 180, 150);
   border-radius: 8px;
-  position: sticky;
-  top: 20px;
-  font-size: 0.95em;
-  height: fit-content;
+  padding: 15px;
 }
+
 .sidebar-left h3,
 .sidebar-right h3 {
-  font-size: 1.1em;
-  margin-bottom: 8px;
-  color: #6fb0ff;
-}
-.sidebar-left ul,
-.sidebar-right ul {
-  list-style: none;
-  padding-left: 0;
-  color: #aad8ff;
-  margin-top: 10px;
-}
-.sidebar-left li::before,
-.sidebar-right li::before {
-  content: '🧬 ';
-  margin-right: 4px;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
 }
 
-/* Botões nos painéis */
 .sidebar-left button,
 .sidebar-right button {
-  background-color: #2d6aa6;
-  color: white;
-  border: none;
-  padding: 6px 12px;
   margin-top: 10px;
-  border-radius: 5px;
-  cursor: pointer;
   width: 100%;
+  padding: 8px;
+  background-color: rgb(0, 180, 150);
+  border: none;
+  border-radius: 6px;
+  color: #000;
   font-weight: bold;
-  transition: background-color 0.2s;
+  cursor: pointer;
 }
+
 .sidebar-left button:hover,
 .sidebar-right button:hover {
-  background-color: #3f8cd4;
+  background-color: rgb(0, 160, 130);
 }
 
-/* Filtros */
-.filter-buttons {
-  text-align: center;
-  margin: 20px 0;
-}
-.filter-buttons button {
-  background-color: #2d6aa6;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  margin: 4px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-weight: 500;
-}
-.filter-buttons button:hover {
-  background-color: #3f8cd4;
-}
-
-/* Cards de mutações */
-.mutation-items {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  justify-items: stretch;
-}
-.mutation-item {
-  background-color: #1a1a1a;
-  border: 1px solid #2d6aa6;
-  border-radius: 6px;
-  padding: 12px;
-  min-height: 130px;
-  margin: 4px;
+/* Conteúdo central */
+.central-content {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  gap: 20px;
 }
-.mutation-item.selecionado {
-  border: 2px solid #2ecc71;
-  background-color: #132d1a;
-  box-shadow: 0 0 6px #2ecc7150;
-}
-.mutation-title {
-  font-weight: 600;
-  font-size: 0.95em;
+
+/* Seletor de dinossauro */
+.dino-selector select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 2px solid rgb(0, 180, 150);
+  background-color: #111;
   color: #fff;
-  cursor: pointer;
-}
-.mutation-detail {
-  font-size: 0.9em;
-  color: #ccc;
-  margin-top: 8px;
-  display: block;
 }
 
-/* Botão dentro da mutação */
-.select-btn {
-  margin-top: 10px;
-  background-color: #444;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.85em;
-  transition: background-color 0.2s;
-}
-.select-btn:hover {
-  background-color: #666;
-}
-
-/* Responsivo */
-@media (max-width: 1024px) {
-  .layout-columns {
-    flex-direction: column;
-  }
-  .sidebar-left,
-  .sidebar-right {
-    width: 100%;
-    position: static;
-  }
-  .mutation-items {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  }
-}
-
-.dino-selector {
-  margin-bottom: 20px;
-}
-
+/* Atributos */
 .simulador-status {
-  background-color: #1a1a1a;
-  margin-top: 30px;
-  padding: 16px;
-  border: 1px solid #2d6aa6;
+  background-color: #111;
+  border: 2px solid rgb(0, 180, 150);
   border-radius: 8px;
-  max-width: 720px;
+  padding: 15px;
 }
 
 .simulador-status h2 {
   margin-bottom: 10px;
-  color: #6fb0ff;
 }
 
 .simulador-status ul {
   list-style: none;
   padding-left: 0;
-  color: #aad8ff;
-  line-height: 1.6;
 }
 
-select option.placeholder-option {
-  color: #888;
-  font-style: italic;
+/* Caixa de conteúdo com abas */
+.content-box {
+  background-color: #111;
+  border: 2px solid rgb(0, 180, 150);
+  border-radius: 8px;
+  padding: 15px;
+}
+
+/* Botões de filtro */
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-buttons button {
+  padding: 8px 14px;
+  border: 1px solid rgb(0, 180, 150);
+  border-radius: 20px;
+  background-color: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.filter-buttons button:hover {
+  background-color: rgb(0, 180, 150);
+  color: #000;
+}
+
+/* Grade de mutações */
+.mutation-items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 38px; /* 1cm horizontal */
+}
+
+/* Cada mutação */
+.mutation-item {
+  background-color: #222;
+  border: 2px solid rgb(0, 180, 150);
+  border-radius: 8px;
+  padding: 10px;
+  transition: background-color 0.3s;
+}
+
+.mutation-title {
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+}
+
+.mutation-detail {
+  display: none;
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: #ccc;
+}
+
+.mutation-item.active .mutation-detail {
+  display: block;
+}
+
+.select-btn {
+  margin-top: 10px;
+  margin-right: 5px;
+  padding: 6px 10px;
+  background-color: rgb(0, 180, 150);
+  border: none;
+  border-radius: 6px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.select-btn:hover {
+  background-color: rgb(0, 160, 130);
+}
+
+/* Responsividade */
+@media (max-width: 1000px) {
+  .main-layout {
+    flex-direction: column;
+  }
+
+  .sidebar-left,
+  .sidebar-right {
+    width: 100%;
+  }
+
+  .mutation-items {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Efeito visual para mutações selecionadas */
+.mutation-item.selecionado {
+  border-color: rgb(0, 220, 180);
+  background-color: rgba(0, 220, 180, 0.1);
+  animation: destaqueSelecionado 0.4s ease;
+}
+
+@keyframes destaqueSelecionado {
+  0% {
+    box-shadow: 0 0 0px rgba(0, 220, 180, 0.0);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(0, 220, 180, 0.6);
+    transform: scale(1.02);
+  }
+  100% {
+    box-shadow: 0 0 0px rgba(0, 220, 180, 0.0);
+    transform: scale(1);
+  }
 }
