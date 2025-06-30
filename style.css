@@ -412,15 +412,34 @@ header h1 {
 .linha-atributo .barra {
   flex: 3;
   background-color: #333;
-  height: 10px;
+  height: 12px;
   border-radius: 4px;
   overflow: hidden;
+  position: relative;
 }
 
 .linha-atributo .preenchimento {
   height: 100%;
+  width: 0%;
   background-color: #00c896;
   transition: width 0.3s ease;
+}
+
+/* Cores por atributo */
+.barra.dano .preenchimento {
+  background-color: #e74c3c;
+}
+.barra.velocidade .preenchimento {
+  background-color: #3498db;
+}
+.barra.resistencia .preenchimento {
+  background-color: #2ecc71;
+}
+.barra.furtividade .preenchimento {
+  background-color: #9b59b6;
+}
+.barra.regeneracao .preenchimento {
+  background-color: #f39c12;
 }
 
 .linha-atributo .valor {

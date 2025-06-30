@@ -161,6 +161,7 @@ function atualizarSimulador() {
   `;
 
   calcularAtributosFinais();
+  
 }
 
 // === CALCULA E MOSTRA OS ATRIBUTOS FINAIS COM MUTAÇÕES ===
@@ -200,7 +201,7 @@ function calcularAtributosFinais() {
     linha.className = 'linha-atributo';
     linha.innerHTML = `
       <span class="label">${labels[key]}</span>
-      <div class="barra">
+      <div class="barra ${key}">
         <div class="preenchimento" style="width: ${val * 10}%;"></div>
       </div>
       <span class="valor">${val}</span>
