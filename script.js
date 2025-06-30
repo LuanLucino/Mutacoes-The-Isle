@@ -180,12 +180,12 @@ function calcularAtributosFinais() {
   const atributos = { ...dino.atributos_base };
 
   [...selecionadas, ...herdadas].forEach(nomeMut => {
-    const efeito = efeitosMutacoes[nomeMut];
-    if (!efeito) return;
-    for (let key in efeito) {
-      atributos[key] = (atributos[key] || 0) + efeito[key];
-    }
-  });
+  const efeito = efeitosMutacoes[nomeMut];
+  if (!efeito) return;
+  for (let key in efeito) {
+    atributos[key] = (atributos[key] || 0) + efeito[key];
+  }
+});
 
   const labels = {
     dano: "Dano Estratégico",
@@ -199,14 +199,30 @@ function calcularAtributosFinais() {
     const val = Math.min(atributos[key], 10);
     const linha = document.createElement('div');
     linha.className = 'linha-atributo';
-    linha.innerHTML = `
-      <span class="label">${labels[key]}</span>
-      <div class="barra ${key}">
-        <div class="preenchimento" style="width: ${val * 10}%;"></div>
-      </div>
-      <span class="valor">${val}</span>
-    `;
+    // Determina a direção da mudança
+let direcao = '';
+if (valoresAnteriores[key] !== undefined) {
+  if (val > valoresAnteriores[key]) direcao = '🟢↑';
+  else if (val < valoresAnteriores[key]) direcao = '🔴↓';
+  else direcao = '⚪—';
+}
+
+
+linha.innerHTML = `
+  <span class="label">${labels[key]}</span>
+  <div class="barra ${key}">
+    <div class="preenchimento" style="width: ${val * 10}%;"></div>
+  </div>
+  <span class="valor">${val} <span class="mudanca">${direcao}</span></span>
+`;
     barra.appendChild(linha);
+    const barraDiv = linha.querySelector('.barra');
+if (valoresAnteriores[key] !== val) {
+  barraDiv.classList.add('destacado');
+  setTimeout(() => {
+    barraDiv.classList.remove('destacado');
+  }, 600);
+}
   }
 }
 
@@ -222,7 +238,7 @@ function filtrarMutacoes(tipo) {
 // === SELEÇÃO DE MUTAÇÕES ATIVAS ===
 function selecionarMutacao(botao) {
   const item = botao.closest('.mutation-item');
-  const nome = item.querySelector('.mutation-title')?.innerText.trim();
+  const nome = item.dataset.nome; // usa o nome real do JSON
 
   if (selecionadas.includes(nome)) {
     selecionadas = selecionadas.filter(i => i !== nome);
@@ -242,13 +258,17 @@ function selecionarMutacao(botao) {
 
   atualizarPainel();
   gerarResumo();
-  calcularAtributosFinais();
+
+  const select = document.getElementById('select-dino');
+  if (select && select.value) {
+    calcularAtributosFinais();
+  }
 }
 
 // === SELEÇÃO DE MUTAÇÕES HERDADAS ===
 function selecionarHerdada(botao) {
   const item = botao.closest('.mutation-item');
-  const nome = item.querySelector('.mutation-title')?.innerText.trim();
+  const nome = item.dataset.nome; // usa o nome real do JSON
 
   if (herdadas.includes(nome)) {
     herdadas = herdadas.filter(i => i !== nome);
@@ -268,7 +288,11 @@ function selecionarHerdada(botao) {
 
   atualizarPainelHerdadas();
   gerarResumo();
-  calcularAtributosFinais();
+
+  const select = document.getElementById('select-dino');
+  if (select && select.value) {
+    calcularAtributosFinais();
+  }
 }
 
 // === ATUALIZA OS PAINÉIS LATERAIS ===
@@ -562,6 +586,8 @@ function atualizarCombatente(letra) {
     if (!efeito) return;
     for (let key in efeito) {
       atributos[key] = (atributos[key] || 0) + efeito[key];
+      const nomeLimpo = nomeMut.split(' (')[0];
+      const efeito = efeitosMutacoes[nomeLimpo];
     }
   });
 
@@ -600,7 +626,7 @@ const sinergiasMutacoes = [
 
 function verificarSinergias(letra) {
   const container = document.getElementById(`mutacoes-${letra}`);
-  const selecionadas = Array.from(container.querySelectorAll('.selecionado')).map(li => li.textContent.trim());
+  const selecionadas = Array.from(container.querySelectorAll('.selecionado')).map(li => li.textContent.trim().split(' (')[0]);
 
   const sugestoes = sinergiasMutacoes.filter(sinergia =>
     sinergia.combinacao.every(mut => selecionadas.includes(mut))
@@ -672,4 +698,13 @@ document.addEventListener('DOMContentLoaded', () => {
     preencherSelectCombate();
     carregarEfeitosMutacoes();
   });
+});
+
+const valoresAnteriores = {};
+document.querySelectorAll('.linha-atributo').forEach(linha => {
+  const tipo = linha.querySelector('.barra')?.classList[1]; // ex: "dano", "velocidade"
+  const valor = parseInt(linha.querySelector('.valor')?.textContent);
+  if (tipo && !isNaN(valor)) {
+    valoresAnteriores[tipo] = valor;
+  }
 });

@@ -448,3 +448,33 @@ header h1 {
   text-align: right;
   font-weight: bold;
 }
+
+/* Efeito de destaque temporário */
+.barra.destacado {
+  box-shadow: 0 0 12px 4px rgba(255, 215, 0, 0.8);
+  transition: box-shadow 0.3s ease;
+}
+
+.valor .mudanca {
+  font-size: 0.9em;
+  margin-left: 4px;
+  font-weight: normal;
+  opacity: 0.8;
+}
+
+.valor .mudanca::after {
+  display: inline-block;
+  margin-left: 2px;
+}
+
+.valor .mudanca:contains("↑") {
+  color: #2ecc71; /* verde */
+}
+
+.valor .mudanca:contains("↓") {
+  color: #e74c3c; /* vermelho */
+}
+
+.valor .mudanca:contains("—") {
+  color: #aaa;
+}
