@@ -1,0 +1,20 @@
+{
+  "Hemomania": { "dano": 2 },
+  "Featherweight": { "velocidade": 2, "furtividade": 1 },
+  "Osteosclerosis": { "resistencia": 2 },
+  "Augmented Tapetum": { "furtividade": 2 },
+  "Cellular Regeneration": { "regeneracao": 3 },
+  "Cannibalistic": { "dano": 1, "regeneracao": 1 },
+  "Reinforced Tendons": { "velocidade": 1, "resistencia": 1 },
+  "Wader": { "furtividade": 1, "regeneracao": 1 },
+  "Thick Hide": { "resistencia": 3 },
+  "Adrenal Surge": { "velocidade": 1, "dano": 1 },
+  "Iron Stomach": { "resistencia": 1, "regeneracao": 1 },
+  "Camouflage": { "furtividade": 3 },
+  "Bone Crusher": { "dano": 3 },
+  "Photosynthesis": { "regeneracao": 2 },
+  "Silent Steps": { "furtividade": 2 },
+  "Hypermetabolism": { "regeneracao": 2, "velocidade": 1 },
+  "Bloodlust": { "dano": 2, "resistencia": -1 },
+  "Echo Location": { "furtividade": 1, "velocidade": 1 }
+}

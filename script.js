@@ -1,17 +1,23 @@
 // === EFEITOS DAS MUTAÇÕES SOBRE ATRIBUTOS ===
-const efeitosMutacoes = {
-  "Hemomania": { dano: 2 },
-  "Featherweight": { velocidade: 2, furtividade: 1 },
-  "Osteosclerosis": { resistencia: 2 },
-  "Augmented Tapetum": { furtividade: 2 },
-  "Cellular Regeneration": { regeneracao: 3 },
-  "Cannibalistic": { dano: 1, regeneracao: 1 },
-  "Reinforced Tendons": { velocidade: 1, resistencia: 1 }
-};
+let efeitosMutacoes = {};
 
 let selecionadas = [];
 let herdadas = [];
 let graficoCombate = null;
+
+
+function carregarEfeitosMutacoes() {
+  return fetch('mutacoes.json')
+    .then(res => res.json())
+    .then(data => {
+      efeitosMutacoes = data;
+      criarListaMutacoesCombate('a');
+      criarListaMutacoesCombate('b');
+    })
+    .catch(err => {
+      console.error('Erro ao carregar mutações:', err);
+    });
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   const select = document.getElementById('select-dino');
@@ -514,3 +520,101 @@ function exportarGrafico() {
   link.href = canvas.toDataURL('image/png');
   link.click();
 }
+
+//botoes de mutações
+
+document.addEventListener('DOMContentLoaded', () => {
+  carregarConteudoMutacoes();
+  carregarConteudoDesbloqueaveis();
+  preencherSelectCombate();
+  carregarEfeitosMutacoes();
+  listarBuilds?.();
+});
+
+
+function criarListaMutacoesCombate(letra) {
+  const container = document.getElementById(`mutacoes-${letra}`);
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  Object.keys(efeitosMutacoes).forEach(nome => {
+    const btn = document.createElement('button');
+    btn.textContent = nome;
+    btn.className = 'mutacao-btn';
+    btn.onclick = () => {
+      btn.classList.toggle('selecionada');
+      const selecionadas = container.querySelectorAll('.mutacao-btn.selecionada');
+      if (selecionadas.length > 3) {
+        btn.classList.remove('selecionada');
+        alert('Máximo de 3 mutações por combatente.');
+      }
+      atualizarCombatente(letra);
+      verificarSinergias?.(letra); // se estiver usando sinergias
+    };
+    container.appendChild(btn);
+  });
+}
+
+
+
+
+// Sinergia de Mutações //
+
+const sinergiasMutacoes = [
+  {
+    combinacao: ["Featherweight", "Wader"],
+    nome: "Build de Fuga",
+    descricao: "Alta velocidade e furtividade para escapar de predadores com facilidade."
+  },
+  {
+    combinacao: ["Hemomania", "Cannibalistic"],
+    nome: "Build Sanguinária",
+    descricao: "Foco em dano e regeneração rápida após ataques agressivos."
+  },
+  {
+    combinacao: ["Osteosclerosis", "Reinforced Tendons"],
+    nome: "Build Tanque",
+    descricao: "Alta resistência física para aguentar combates prolongados."
+  },
+  {
+    combinacao: ["Augmented Tapetum", "Featherweight"],
+    nome: "Build Caçador Noturno",
+    descricao: "Furtividade e leveza para emboscadas rápidas e silenciosas."
+  }
+];
+
+
+function verificarSinergias(letra) {
+  const container = document.getElementById(`mutacoes-${letra}`);
+  const selecionadas = Array.from(container.querySelectorAll('.mutacao-btn.selecionada')).map(btn => btn.textContent.trim());
+
+  const sugestoes = sinergiasMutacoes.filter(sinergia =>
+    sinergia.combinacao.every(mut => selecionadas.includes(mut))
+  );
+
+  const box = document.getElementById(`sinergia-${letra}`);
+  box.innerHTML = '';
+
+  if (sugestoes.length > 0) {
+    sugestoes.forEach(s => {
+      const div = document.createElement('div');
+      div.className = 'sinergia-box';
+      div.innerHTML = `<strong>${s.nome}</strong><br><em>${s.descricao}</em>`;
+      box.appendChild(div);
+    });
+  } else {
+    box.innerHTML = '<em>Nenhuma sinergia detectada.</em>';
+  }
+}
+
+btn.onclick = () => {
+  btn.classList.toggle('selecionada');
+  const selecionadas = container.querySelectorAll('.mutacao-btn.selecionada');
+  if (selecionadas.length > 3) {
+    btn.classList.remove('selecionada');
+    alert('Máximo de 3 mutações por combatente.');
+  }
+  atualizarCombatente(letra);
+  verificarSinergias(letra); // 👈 aqui
+};
