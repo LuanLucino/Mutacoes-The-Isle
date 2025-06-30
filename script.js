@@ -1,62 +1,137 @@
-// === EFEITOS DAS MUTAÇÕES SOBRE ATRIBUTOS ===
+// === VARIÁVEIS GLOBAIS ===
 let efeitosMutacoes = {};
-
 let selecionadas = [];
 let herdadas = [];
 let graficoCombate = null;
 
+function aguardarDadosDinos(callback) {
+  const intervalo = setInterval(() => {
+    if (typeof dadosDinos !== 'undefined' && Array.isArray(dadosDinos.dinossauros)) {
+      clearInterval(intervalo);
+      callback();
+    }
+  }, 50);
+}
 
+
+// === CARREGAMENTO DE MUTAÇÕES (JSON) ===
 function carregarEfeitosMutacoes() {
   return fetch('mutacoes.json')
     .then(res => res.json())
     .then(data => {
       efeitosMutacoes = data;
-      criarListaMutacoesCombate('a');
-      criarListaMutacoesCombate('b');
+      criarListaMutacoesDropdown('a');
+      criarListaMutacoesDropdown('b');
     })
     .catch(err => {
       console.error('Erro ao carregar mutações:', err);
     });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const select = document.getElementById('select-dino');
-  select.innerHTML = '';
+// === CARREGAMENTO DE CONTEÚDO HTML ===
+function carregarConteudoMutacoes() {
+  fetch('mutacoes.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('mutacoes-container').innerHTML = html;
+      inicializarAcordeao();
+    });
+}
 
-  const optionBase = document.createElement('option');
-  optionBase.value = '';
-  optionBase.textContent = '-- Nenhum selecionado --';
-  optionBase.disabled = true;
-  optionBase.selected = true;
-  optionBase.classList.add('placeholder-option');
-  select.appendChild(optionBase);
+function carregarConteudoDesbloqueaveis() {
+  fetch('desbloqueaveis.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('desbloqueaveis-container').innerHTML = html;
+      inicializarAcordeao();
+    });
+}
 
-  const tipos = { "Carnívoro": [], "Herbívoro": [], "Onívoro": [] };
+// === INICIALIZAÇÃO ===
+document.addEventListener('DOMContentLoaded', () => {
+  aguardarDadosDinos(() => {
+    carregarConteudoMutacoes();
+    carregarConteudoDesbloqueaveis();
+    preencherSelectCombate();
+    carregarEfeitosMutacoes();
+    if (typeof listarBuilds === 'function') {
+  listarBuilds();
+}
+  });
+});
 
-  dadosDinos.dinossauros.forEach(dino => {
-    const dietas = dino.dieta.map(d => d.toLowerCase());
-    if (dietas.includes("onívoro")) tipos["Onívoro"].push(dino);
-    else if (dietas.includes("herbívoro")) tipos["Herbívoro"].push(dino);
-    else tipos["Carnívoro"].push(dino);
+// === ABA E ACORDEÃO ===
+function showTab(tabId) {
+  const tabs = document.querySelectorAll('.tab-content');
+  tabs.forEach(tab => tab.style.display = 'none');
+  const tab = document.getElementById(tabId);
+  if (tab) tab.style.display = 'block';
+}
+
+function inicializarAcordeao() {
+  const titles = document.querySelectorAll('.mutation-title');
+  titles.forEach(title => {
+    title.addEventListener('click', () => toggleItem(title));
+    title.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleItem(title);
+      }
+    });
+  });
+}
+
+function toggleItem(titleElement) {
+  const container = titleElement.closest('.mutation-items');
+  const allItems = container.querySelectorAll('.mutation-item');
+  allItems.forEach(item => item.classList.remove('active'));
+  const parent = titleElement.parentElement;
+  if (!parent.classList.contains('active')) {
+    parent.classList.add('active');
+  }
+}
+
+// === PREENCHIMENTO DOS SELECTS DE COMBATE ===
+function preencherSelectCombate() {
+  const selects = [document.getElementById('dino-a'), document.getElementById('dino-b')];
+  selects.forEach(select => {
+    select.innerHTML = '';
+    const optionBase = document.createElement('option');
+    optionBase.value = '';
+    optionBase.textContent = '-- Selecione --';
+    optionBase.disabled = true;
+    optionBase.selected = true;
+    select.appendChild(optionBase);
+
+    const tipos = { "Carnívoro": [], "Herbívoro": [], "Onívoro": [] };
+
+    dadosDinos.dinossauros.forEach(dino => {
+      const dietas = dino.dieta.map(d => d.toLowerCase());
+      if (dietas.includes("onívoro")) tipos["Onívoro"].push(dino);
+      else if (dietas.includes("herbívoro")) tipos["Herbívoro"].push(dino);
+      else tipos["Carnívoro"].push(dino);
+    });
+
+    for (const tipo in tipos) {
+      const group = document.createElement('optgroup');
+      group.label = `🦕 ${tipo}`;
+      tipos[tipo].forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d.nome;
+        opt.textContent = d.nome;
+        group.appendChild(opt);
+      });
+      select.appendChild(group);
+    }
   });
 
-  for (const tipo in tipos) {
-    const group = document.createElement('optgroup');
-    group.label = `🦕 ${tipo}`;
-    tipos[tipo].forEach(d => {
-      const opt = document.createElement('option');
-      opt.value = d.nome;
-      opt.textContent = d.nome;
-      group.appendChild(opt);
-    });
-    select.appendChild(group);
+  // ✅ Seleciona automaticamente o primeiro dinossauro no simulador principal
+  const selectSimulador = document.getElementById('select-dino');
+  if (selectSimulador && selectSimulador.options.length > 1) {
+    selectSimulador.selectedIndex = 1; // Seleciona o primeiro dinossauro real
+    atualizarSimulador();
   }
-
-  carregarConteudoMutacoes();
-  carregarConteudoDesbloqueaveis();
-  preencherSelectCombate();
-  listarBuilds?.();
-});
+}
 
 // === ATUALIZA O PAINEL DO DINOSSAURO SELECIONADO ===
 function atualizarSimulador() {
@@ -143,7 +218,7 @@ function filtrarMutacoes(tipo) {
   });
 }
 
-// === SELEÇÃO DE MUTAÇÕES ===
+// === SELEÇÃO DE MUTAÇÕES ATIVAS ===
 function selecionarMutacao(botao) {
   const item = botao.closest('.mutation-item');
   const nome = item.querySelector('.mutation-title')?.innerText.trim();
@@ -169,6 +244,7 @@ function selecionarMutacao(botao) {
   calcularAtributosFinais();
 }
 
+// === SELEÇÃO DE MUTAÇÕES HERDADAS ===
 function selecionarHerdada(botao) {
   const item = botao.closest('.mutation-item');
   const nome = item.querySelector('.mutation-title')?.innerText.trim();
@@ -194,6 +270,7 @@ function selecionarHerdada(botao) {
   calcularAtributosFinais();
 }
 
+// === ATUALIZA OS PAINÉIS LATERAIS ===
 function atualizarPainel() {
   const lista = document.getElementById('selected-list');
   lista.innerHTML = '';
@@ -216,6 +293,7 @@ function atualizarPainelHerdadas() {
   document.getElementById('slot-herdadas').textContent = `${herdadas.length}/3 Selecionadas`;
 }
 
+// === RESETA MUTAÇÕES ===
 function resetSelecao() {
   selecionadas = [];
   document.querySelectorAll('.mutation-item').forEach(item => item.classList.remove('selecionado'));
@@ -268,100 +346,7 @@ function gerarResumo() {
   });
 }
 
-// === CARREGAMENTO DINÂMICO DE CONTEÚDO ===
-function carregarConteudoMutacoes() {
-  fetch('mutacoes.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('mutacoes-container').innerHTML = html;
-      inicializarAcordeao();
-    });
-}
-
-function carregarConteudoDesbloqueaveis() {
-  fetch('desbloqueaveis.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('desbloqueaveis-container').innerHTML = html;
-      inicializarAcordeao();
-    });
-}
-
-// === AÇÕES DE ABA E ACORDEÃO ===
-function showTab(tabId) {
-  const tabs = document.querySelectorAll('.tab-content');
-  tabs.forEach(tab => tab.style.display = 'none');
-
-  const tab = document.getElementById(tabId);
-  if (tab) tab.style.display = 'block';
-}
-
-function inicializarAcordeao() {
-  const titles = document.querySelectorAll('.mutation-title');
-
-  titles.forEach(title => {
-    title.addEventListener('click', () => toggleItem(title));
-    title.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleItem(title);
-      }
-    });
-  });
-}
-
-function toggleItem(titleElement) {
-  const container = titleElement.closest('.mutation-items');
-  const allItems = container.querySelectorAll('.mutation-item');
-  allItems.forEach(item => item.classList.remove('active'));
-
-  const parent = titleElement.parentElement;
-  if (!parent.classList.contains('active')) {
-    parent.classList.add('active');
-  }
-}
-
-// === COMBATE ===
-function preencherSelectCombate() {
-  const selects = [document.getElementById('dino-a'), document.getElementById('dino-b')];
-  selects.forEach(select => {
-    select.innerHTML = '';
-    const optionBase = document.createElement('option');
-    optionBase.value = '';
-    optionBase.textContent = '-- Selecione --';
-    optionBase.disabled = true;
-    optionBase.selected = true;
-    select.appendChild(optionBase);
-
-    const tipos = { "Carnívoro": [], "Herbívoro": [], "Onívoro": [] };
-
-    dadosDinos.dinossauros.forEach(dino => {
-      const dietas = dino.dieta.map(d => d.toLowerCase());
-      if (dietas.includes("onívoro")) tipos["Onívoro"].push(dino);
-      else if (dietas.includes("herbívoro")) tipos["Herbívoro"].push(dino);
-      else tipos["Carnívoro"].push(dino);
-    });
-
-    for (const tipo in tipos) {
-      const group = document.createElement('optgroup');
-      group.label = `🦕 ${tipo}`;
-      tipos[tipo].forEach(d => {
-        const opt = document.createElement('option');
-        opt.value = d.nome;
-        opt.textContent = d.nome;
-        group.appendChild(opt);
-      });
-      select.appendChild(group);
-    }
-  });
-}
-
-function obterMutacoesSelecionadas(idContainer) {
-  const container = document.getElementById(idContainer);
-  const selecionadas = container.querySelectorAll('.mutacao-btn.selecionada');
-  return Array.from(selecionadas).map(btn => btn.textContent.trim());
-}
-
+// === SIMULADOR DE COMBATE ===
 function simularCombate() {
   const nomeA = document.getElementById('dino-a').value;
   const nomeB = document.getElementById('dino-b').value;
@@ -482,6 +467,82 @@ function simularCombate() {
   });
 }
 
+// === EXPORTAÇÃO DO GRÁFICO ===
+function exportarGrafico() {
+  const canvas = document.getElementById('grafico-combate');
+  const link = document.createElement('a');
+  link.download = 'grafico-combate.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+// === DROPDOWN DE MUTAÇÕES COM SELEÇÃO MÚLTIPLA ===
+function criarListaMutacoesDropdown(letra) {
+  const lista = document.getElementById(`mutacoes-${letra}`);
+  const botao = document.querySelector(`#dropdown-${letra} .dropdown-toggle`);
+  if (!lista || !botao) return;
+
+  lista.innerHTML = '';
+
+  Object.keys(efeitosMutacoes).forEach(nome => {
+    const li = document.createElement('li');
+    li.textContent = nome;
+    li.onclick = (e) => {
+      e.stopPropagation(); // evita que o clique feche o dropdown imediatamente
+      li.classList.toggle('selecionado');
+
+      const selecionadas = Array.from(lista.querySelectorAll('.selecionado')).map(li => li.textContent.trim());
+
+      if (selecionadas.length > 3) {
+        li.classList.remove('selecionado');
+        alert('Máximo de 3 mutações por combatente.');
+        return;
+      }
+
+      // Atualiza o texto do botão
+      botao.textContent = selecionadas.length > 0 ? selecionadas.join(', ') : 'Selecione';
+
+      // Atualiza atributos e sinergias
+      atualizarCombatente(letra);
+      verificarSinergias?.(letra);
+    };
+    lista.appendChild(li);
+  });
+}
+
+// === TOGGLE DO DROPDOWN ===
+function toggleDropdown(letra) {
+  const lista = document.getElementById(`mutacoes-${letra}`);
+  if (!lista) return;
+
+  // Fecha todos os outros dropdowns
+  document.querySelectorAll('.dropdown-list').forEach(l => {
+    if (l !== lista) l.style.display = 'none';
+  });
+
+  // Alterna visibilidade do atual
+  lista.style.display = lista.style.display === 'block' ? 'none' : 'block';
+}
+
+// === FECHAR DROPDOWN AO CLICAR FORA ===
+document.addEventListener('click', (event) => {
+  const dropdowns = document.querySelectorAll('.dropdown-mutacoes');
+  dropdowns.forEach(dropdown => {
+    const lista = dropdown.querySelector('.dropdown-list');
+    if (!dropdown.contains(event.target)) {
+      lista.style.display = 'none';
+    }
+  });
+});
+
+// === OBTÉM MUTAÇÕES SELECIONADAS DO DROPDOWN ===
+function obterMutacoesSelecionadas(idLista) {
+  const lista = document.getElementById(idLista);
+  if (!lista) return [];
+  return Array.from(lista.querySelectorAll('.selecionado')).map(li => li.textContent.trim());
+}
+
+// === ATUALIZA COMBATE COM MUTAÇÕES ===
 function atualizarCombatente(letra) {
   const select = document.getElementById(`dino-${letra}`);
   const nome = select.value;
@@ -512,55 +573,7 @@ function atualizarCombatente(letra) {
   `;
 }
 
-// === EXPORTAÇÃO DO GRÁFICO ===
-function exportarGrafico() {
-  const canvas = document.getElementById('grafico-combate');
-  const link = document.createElement('a');
-  link.download = 'grafico-combate.png';
-  link.href = canvas.toDataURL('image/png');
-  link.click();
-}
-
-//botoes de mutações
-
-document.addEventListener('DOMContentLoaded', () => {
-  carregarConteudoMutacoes();
-  carregarConteudoDesbloqueaveis();
-  preencherSelectCombate();
-  carregarEfeitosMutacoes();
-  listarBuilds?.();
-});
-
-
-function criarListaMutacoesCombate(letra) {
-  const container = document.getElementById(`mutacoes-${letra}`);
-  if (!container) return;
-
-  container.innerHTML = '';
-
-  Object.keys(efeitosMutacoes).forEach(nome => {
-    const btn = document.createElement('button');
-    btn.textContent = nome;
-    btn.className = 'mutacao-btn';
-    btn.onclick = () => {
-      btn.classList.toggle('selecionada');
-      const selecionadas = container.querySelectorAll('.mutacao-btn.selecionada');
-      if (selecionadas.length > 3) {
-        btn.classList.remove('selecionada');
-        alert('Máximo de 3 mutações por combatente.');
-      }
-      atualizarCombatente(letra);
-      verificarSinergias?.(letra); // se estiver usando sinergias
-    };
-    container.appendChild(btn);
-  });
-}
-
-
-
-
-// Sinergia de Mutações //
-
+// === SINERGIAS ENTRE MUTAÇÕES ===
 const sinergiasMutacoes = [
   {
     combinacao: ["Featherweight", "Wader"],
@@ -584,16 +597,17 @@ const sinergiasMutacoes = [
   }
 ];
 
-
 function verificarSinergias(letra) {
   const container = document.getElementById(`mutacoes-${letra}`);
-  const selecionadas = Array.from(container.querySelectorAll('.mutacao-btn.selecionada')).map(btn => btn.textContent.trim());
+  const selecionadas = Array.from(container.querySelectorAll('.selecionado')).map(li => li.textContent.trim());
 
   const sugestoes = sinergiasMutacoes.filter(sinergia =>
     sinergia.combinacao.every(mut => selecionadas.includes(mut))
   );
 
   const box = document.getElementById(`sinergia-${letra}`);
+  if (!box) return;
+
   box.innerHTML = '';
 
   if (sugestoes.length > 0) {
@@ -608,13 +622,53 @@ function verificarSinergias(letra) {
   }
 }
 
-btn.onclick = () => {
-  btn.classList.toggle('selecionada');
-  const selecionadas = container.querySelectorAll('.mutacao-btn.selecionada');
-  if (selecionadas.length > 3) {
-    btn.classList.remove('selecionada');
-    alert('Máximo de 3 mutações por combatente.');
+setTimeout(() => {
+  console.log('Dinos carregados?', dadosDinos?.dinossauros?.length);
+}, 1000);
+
+//--------------------------------------//
+
+function preencherSelectSimulador() {
+  const select = document.getElementById('select-dino');
+  if (!select) return;
+
+  select.innerHTML = '';
+
+  const optionBase = document.createElement('option');
+  optionBase.value = '';
+  optionBase.textContent = '-- Nenhum selecionado --';
+  optionBase.disabled = true;
+  optionBase.selected = true;
+  optionBase.classList.add('placeholder-option');
+  select.appendChild(optionBase);
+
+  const tipos = { "Carnívoro": [], "Herbívoro": [], "Onívoro": [] };
+
+  dadosDinos.dinossauros.forEach(dino => {
+    const dietas = dino.dieta.map(d => d.toLowerCase());
+    if (dietas.includes("onívoro")) tipos["Onívoro"].push(dino);
+    else if (dietas.includes("herbívoro")) tipos["Herbívoro"].push(dino);
+    else tipos["Carnívoro"].push(dino);
+  });
+
+  for (const tipo in tipos) {
+    const group = document.createElement('optgroup');
+    group.label = `🦕 ${tipo}`;
+    tipos[tipo].forEach(d => {
+      const opt = document.createElement('option');
+      opt.value = d.nome;
+      opt.textContent = d.nome;
+      group.appendChild(opt);
+    });
+    select.appendChild(group);
   }
-  atualizarCombatente(letra);
-  verificarSinergias(letra); // 👈 aqui
-};
+}
+document.addEventListener('DOMContentLoaded', () => {
+  aguardarDadosDinos(() => {
+    carregarConteudoMutacoes();
+    carregarConteudoDesbloqueaveis();
+    preencherSelectSimulador(); // ✅ Adiciona esta linha
+    preencherSelectCombate();
+    carregarEfeitosMutacoes();
+  });
+});

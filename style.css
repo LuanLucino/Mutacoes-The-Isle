@@ -336,3 +336,96 @@ header h1 {
   margin-top: 6px;
   border-radius: 4px;
 }
+
+.mutacoes-combate select {
+  width: 100%;
+  padding: 6px;
+  border-radius: 6px;
+  background-color: #1a1a1a;
+  color: #ccc;
+  border: 1px solid #444;
+  font-size: 0.9em;
+}
+
+
+.dropdown-mutacoes {
+  position: relative;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.dropdown-toggle {
+  width: 100%;
+  padding: 8px;
+  background-color: #1a1a1a;
+  color: #ccc;
+  border: 1px solid #444;
+  border-radius: 6px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dropdown-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #222;
+  border: 1px solid #444;
+  border-radius: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+  z-index: 10;
+}
+
+.dropdown-list li {
+  padding: 8px;
+  cursor: pointer;
+  color: #ccc;
+}
+
+.dropdown-list li:hover {
+  background-color: #333;
+}
+
+.dropdown-list li.selecionado {
+  background-color: rgb(0, 220, 180);
+  color: #000;
+  font-weight: bold;
+}
+
+.linha-atributo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.linha-atributo .label {
+  flex: 1;
+  font-weight: bold;
+}
+
+.linha-atributo .barra {
+  flex: 3;
+  background-color: #333;
+  height: 10px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.linha-atributo .preenchimento {
+  height: 100%;
+  background-color: #00c896;
+  transition: width 0.3s ease;
+}
+
+.linha-atributo .valor {
+  flex: 0 0 auto;
+  min-width: 20px;
+  text-align: right;
+  font-weight: bold;
+}
